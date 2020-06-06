@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/scip92/brewmaster/issues"
   },
-  "homepage": "https://github.com/scip92/brewmaster#readme"
+  "homepage": "https://github.com/scip92/brewmaster#readme",
+  "devDependencies": {
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "ts-node": "^8.10.2"
+  }
 }
