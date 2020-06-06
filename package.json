@@ -1,0 +1,19 @@
+{
+  "name": "brewmaster",
+  "version": "1.0.0",
+  "description": "brew automation bot",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scip92/brewmaster.git"
+  },
+  "author": "scip92",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scip92/brewmaster/issues"
+  },
+  "homepage": "https://github.com/scip92/brewmaster#readme"
+}
