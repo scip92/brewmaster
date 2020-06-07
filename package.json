@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "server": "yarn workspace server watch",
-    "client": "yarn workspace client watch"
+    "client": "yarn workspace client start"
   },
   "repository": {
     "type": "git",
