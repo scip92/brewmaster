@@ -8,8 +8,8 @@
     "server"
   ],
   "scripts": {
-    "server": "yarn workspace server start",
-    "client": "yarn workspace client start"
+    "server": "yarn workspace server watch",
+    "client": "yarn workspace client watch"
   },
   "repository": {
     "type": "git",
