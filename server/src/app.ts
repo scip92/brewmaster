@@ -2,7 +2,10 @@ import express from "express";
 import { Request, Response } from "express";
 import { noCors } from "./no-cors";
 
+var fs = require('fs');
 const app = express();
+const filePath = "C:/Users/Benjamin Hacker/Desktop/Programmieren/temperature"
+var temperatures = []
 
 app.set("port", 5000);
 
@@ -13,8 +16,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/temperature", (req: Request, res: Response) => {
-    const temperature = Math.random() * 80 + 20;
-    res.send(temperature.toFixed(2).toString());
+    let temperature = fs.readFileSync(filePath).toString()
+    res.send(temperature.split("t=")[1])
 });
 
 export default app;

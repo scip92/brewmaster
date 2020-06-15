@@ -14,4 +14,8 @@ Home Brewing Automation Software
 * Run `$ yarn server` to start development server
 * Run `$ yarn client` to start development client
 
+## Data Path
+
+Define source of data in app.ts
+
 Happy Coding :)
