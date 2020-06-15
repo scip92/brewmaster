@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "server": "yarn workspace server watch",
-    "client": "yarn workspace client start"
+    "client": "yarn workspace client start",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"blue.bold,yellow.bold\" \"yarn run server\" \"yarn run client\""
   },
   "repository": {
     "type": "git",
