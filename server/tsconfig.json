@@ -13,10 +13,11 @@
             "*": [
                 "node_modules/*",
                 "src/types/*"
-            ]
+            ],
+            "@shared/*": ["../shared/*"]
         }
     },
     "include": [
-        "src/**/*"
+        "src/**/*", "../shared/measurement.ts"
     ]
 }
