@@ -11,8 +11,6 @@ const useFake = process.env.USE_FAKER
 const measurementInterval = parseFloat(process.env.MEASUREMENT_INTERVAL)
 const temperatures: number[] = []
 
-console.log(measurementInterval)
-
 function readCurrentTemperature(): number {
     if (useFake) {
         return Math.random() * 80 + 20;
@@ -24,7 +22,7 @@ function readCurrentTemperature(): number {
 
 setInterval(() => {
     temperatures.push(readCurrentTemperature())
-}, 1000 * 1)
+}, 1000 * measurementInterval)
 
 app.set("port", process.env.PORT);
 
