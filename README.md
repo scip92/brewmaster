@@ -20,7 +20,7 @@ Home Brewing Automation Software
 
 ## .env file
 
-* Copy & rename .env.example to .env in same path
+* Copy & rename `.env.example` to `.env` in same path
 * Fill out/check values (especially sensor path)
 
 Happy Coding :)

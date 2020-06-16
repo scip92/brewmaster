@@ -7,12 +7,12 @@ dotenv.config();
 var fs = require('fs');
 const app = express();
 const filePath = process.env.PATH_SAMPLE_DATA
-const getRandomTemperature = process.env.USE_FAKER
-const refreshTime = process.env.MEASUREMENT_INTERVAL
+const useFake = process.env.USE_FAKER
+const measurementInterval = process.env.MEASUREMENT_INTERVAL
 const temperatures: number[] = []
 
 function readCurrentTemperature(): number {
-    if (getRandomTemperature) {
+    if (useFake) {
         return Math.random() * 80 + 20;
     } else {
         const readString = fs.readFileSync(filePath).toString()
@@ -20,12 +20,9 @@ function readCurrentTemperature(): number {
     }
 }
 
-console.log(process.env.PATH_SAMPLE_DATA)
-console.log("Test")
-
 setInterval(() => {
     temperatures.push(readCurrentTemperature())
-}, 1000 * refreshTime)
+}, 1000 * measurementInterval)
 
 app.set("port", process.env.PORT);
 
