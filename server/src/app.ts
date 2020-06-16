@@ -25,7 +25,6 @@ function readCurrentTemperature(): number {
 setInterval(() => {
     const newMeasurement = { value: readCurrentTemperature(), timestamp: new Date() };
     temperatures.push(newMeasurement);
-    console.log(temperatures);
 }, 1000 * measurementInterval)
 
 app.set("port", process.env.PORT);
