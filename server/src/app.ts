@@ -1,12 +1,14 @@
 import express from "express";
 import { Request, Response } from "express";
 import { noCors } from "./no-cors";
+import dotenv from 'dotenv';
+dotenv.config();
 
 var fs = require('fs');
 const app = express();
-const filePath = "C:/Users/Benjamin Hacker/Desktop/Programmieren/temperature"
-const getRandomTemperature = true
-const refreshTime = 1
+const filePath = process.env.PATH_SAMPLE_DATA
+const getRandomTemperature = process.env.USE_FAKER
+const refreshTime = process.env.MEASUREMENT_INTERVAL
 const temperatures: number[] = []
 
 function readCurrentTemperature(): number {
@@ -18,13 +20,14 @@ function readCurrentTemperature(): number {
     }
 }
 
+console.log(process.env.PATH_SAMPLE_DATA)
+console.log("Test")
+
 setInterval(() => {
-    console.log("eine Sekunde")
     temperatures.push(readCurrentTemperature())
-    console.log(temperatures)
 }, 1000 * refreshTime)
 
-app.set("port", 5000);
+app.set("port", process.env.PORT);
 
 app.use(noCors);
 

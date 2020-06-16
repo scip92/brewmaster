@@ -18,8 +18,9 @@ Home Brewing Automation Software
 * Run `$ yarn server` to start development server
 * Run `$ yarn client` to start development client
 
-## Data Path
+## .env file
 
-Define source of data in app.ts
+* Copy & rename .env.example to .env in same path
+* Fill out/check values (especially sensor path)
 
 Happy Coding :)
