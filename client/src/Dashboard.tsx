@@ -27,8 +27,7 @@ export function Dashboard() {
   return (
     <Box marginTop={2}>
       <Typography variant="h3">
-        {" "}
-        Current Termperature: {temperature}{" "}
+        Current Termperature: {temperature}
       </Typography>
       <LineChart width={400} height={400} data={temperatures}>
         <Line type="monotone" dataKey="value" stroke="#8884d8" />
