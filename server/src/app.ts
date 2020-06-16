@@ -6,10 +6,12 @@ dotenv.config();
 
 var fs = require('fs');
 const app = express();
-const filePath = process.env.PATH_SAMPLE_DATA
+const filePath = process.env.SENSOR_PATH
 const useFake = process.env.USE_FAKER
-const measurementInterval = process.env.MEASUREMENT_INTERVAL
+const measurementInterval = parseFloat(process.env.MEASUREMENT_INTERVAL)
 const temperatures: number[] = []
+
+console.log(measurementInterval)
 
 function readCurrentTemperature(): number {
     if (useFake) {
@@ -22,7 +24,7 @@ function readCurrentTemperature(): number {
 
 setInterval(() => {
     temperatures.push(readCurrentTemperature())
-}, 1000 * measurementInterval)
+}, 1000 * 1)
 
 app.set("port", process.env.PORT);
 
