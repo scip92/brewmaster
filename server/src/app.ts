@@ -2,14 +2,14 @@ import express from "express";
 import { Request, Response } from "express";
 import { noCors } from "./no-cors";
 import dotenv from 'dotenv';
-import { Measurement } from "@shared/measurement";
+import { Measurement } from "./measurement";
 
 dotenv.config();
 
 var fs = require('fs');
 const app = express();
-const filePath = process.env.SENSOR_PATH
-const useFake = process.env.USE_FAKER
+const filePath = process.env.SENSOR_PATH;
+const useFake = process.env.USE_FAKER;
 const measurementInterval = parseFloat(process.env.MEASUREMENT_INTERVAL)
 const temperatures: Measurement[] = []
 
@@ -25,6 +25,7 @@ function readCurrentTemperature(): number {
 setInterval(() => {
     const newMeasurement = { value: readCurrentTemperature(), timestamp: new Date() };
     temperatures.push(newMeasurement);
+    console.log(temperatures);
 }, 1000 * measurementInterval)
 
 app.set("port", process.env.PORT);
