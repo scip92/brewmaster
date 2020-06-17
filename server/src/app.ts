@@ -2,9 +2,24 @@ import express from "express";
 import { Request, Response } from "express";
 import { noCors } from "./no-cors";
 import dotenv from 'dotenv';
-import { Measurement } from "./measurement";
+import "reflect-metadata";
+import {createConnection} from "typeorm";
+import { Measurement } from "./entities/measurement";
+
 
 dotenv.config();
+
+createConnection({
+    type: "sqlite",
+    database: "brewmaster.db",
+    entities: [
+        Measurement
+    ],
+    synchronize: true,
+    logging: false
+}).then(connection => {
+    // here you can start to work with your entities
+}).catch(error => console.log(error));
 
 var fs = require('fs');
 const app = express();
@@ -23,8 +38,10 @@ function readCurrentTemperature(): number {
 }
 
 setInterval(() => {
-    const newMeasurement = { value: readCurrentTemperature(), timestamp: new Date() };
-    temperatures.push(newMeasurement);
+    const newMeasurement = new Measurement();
+    newMeasurement.timestamp = new Date()
+    newMeasurement.value = readCurrentTemperature()
+    newMeasurement.save()
 }, 1000 * measurementInterval)
 
 app.set("port", process.env.PORT);
