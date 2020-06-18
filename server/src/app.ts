@@ -11,7 +11,7 @@ dotenv.config();
 
 createConnection({
     type: "sqlite",
-    database: "brewmaster.db",
+    database: "./data/brewmaster.db",
     entities: [
         Measurement
     ],
@@ -26,7 +26,6 @@ const app = express();
 const filePath = process.env.SENSOR_PATH;
 const useFake = process.env.USE_FAKER;
 const measurementInterval = parseFloat(process.env.MEASUREMENT_INTERVAL)
-const temperatures: Measurement[] = []
 
 function readCurrentTemperature(): number {
     if (useFake) {
@@ -52,12 +51,14 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
 
-app.get("/temperature", (req: Request, res: Response) => {
-    res.send(temperatures[temperatures.length - 1].value.toFixed(2).toString())
+app.get("/temperature", async (req: Request, res: Response) => {
+    const allTemperatures = await Measurement.find();
+    res.send(allTemperatures[allTemperatures.length - 1])
 });
 
-app.get("/temperatures", (req: Request, res: Response) => {
-    res.send(temperatures);
+app.get("/temperatures", async (req: Request, res: Response) => {
+    const allTemperatures = await Measurement.find();
+    res.send(JSON.stringify(allTemperatures));
 });
 
 export default app;
