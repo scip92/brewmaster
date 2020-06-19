@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Typography, Box } from "@material-ui/core";
 import { LineChart, Line, XAxis, YAxis } from "recharts";
 import { Measurement } from "./models/measurement";
+import { apiUrl } from "./api";
 
 export function Dashboard() {
   const [temperature, setTemperature] = useState(0);
 
   useEffect(() => {
     async function getTemperature() {
-      const res = await fetch("http://localhost:5000/temperature");
+      const res = await fetch(`${apiUrl}/temperature`);
       res.json().then((res) => setTemperature(res.value.toFixed(2)));
     }
     getTemperature();
@@ -18,7 +19,7 @@ export function Dashboard() {
 
   useEffect(() => {
     async function getTemperatures() {
-      const res = await fetch("http://localhost:5000/temperatures");
+      const res = await fetch(`${apiUrl}/temperatures`);
       res.json().then((res) => setTemperatures(res));
     }
     getTemperatures();
