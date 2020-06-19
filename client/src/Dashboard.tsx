@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Box } from "@material-ui/core";
 import { LineChart, Line, XAxis, YAxis } from "recharts";
-import { Measurement } from "../../shared/measurement";
+import { Measurement } from "./models/measurement";
 
 export function Dashboard() {
   const [temperature, setTemperature] = useState(0);
@@ -9,7 +9,7 @@ export function Dashboard() {
   useEffect(() => {
     async function getTemperature() {
       const res = await fetch("http://localhost:5000/temperature");
-      res.json().then((res) => setTemperature(res));
+      res.json().then((res) => setTemperature(res.value.toFixed(2)));
     }
     getTemperature();
   }, []);

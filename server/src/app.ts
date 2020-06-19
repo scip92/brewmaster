@@ -53,7 +53,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.get("/temperature", async (req: Request, res: Response) => {
     const allTemperatures = await Measurement.find();
-    res.send(allTemperatures[allTemperatures.length - 1])
+    res.send(JSON.stringify(allTemperatures[allTemperatures.length - 1]));
 });
 
 app.get("/temperatures", async (req: Request, res: Response) => {
