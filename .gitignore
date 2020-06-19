@@ -2,3 +2,4 @@ node_modules
 server/dist
 server/.env
 server/data/brewmaster.db
+**/yarn-error.log
