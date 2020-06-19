@@ -24,9 +24,9 @@ createConnection({
 var fs = require('fs');
 const app = express();
 const filePath = process.env.SENSOR_PATH;
-const useFake = process.env.USE_FAKER;
+const useFake = (process.env.USE_FAKER === "true");
 const measurementInterval = parseFloat(process.env.MEASUREMENT_INTERVAL)
-
+ 
 function readCurrentTemperature(): number {
     if (useFake) {
         return Math.random() * 80 + 20;
