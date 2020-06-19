@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Box, Button, TextField } from "@material-ui/core";
+import React, { useEffect, useState, FormEvent } from "react";
+import { Typography, Box, Button, TextField, Paper } from "@material-ui/core";
 import { LineChart, Line, XAxis, YAxis } from "recharts";
 import { Measurement } from "./models/measurement";
 import { apiUrl } from "./api";
@@ -7,8 +7,8 @@ import { theme } from "./theme";
 
 export function Dashboard() {
   const [temperature, setTemperature] = useState(0);
-  var minTemperatureSet = 50;
-  var maxTemperatureSet = 70;
+  const [min, setMin] = useState(50);
+  const [max, setMax] = useState(70);
 
   useEffect(() => {
     async function getTemperature() {
@@ -21,40 +21,33 @@ export function Dashboard() {
   }, []);
 
   const getBoxColor = (currentTemperature: number) => {
-    if (currentTemperature < minTemperatureSet) {
+    if (currentTemperature < min) {
       return theme.palette.info.main
-    } if (currentTemperature > maxTemperatureSet) {
+    } if (currentTemperature > max) {
       return theme.palette.warning.main
-    } else {
-      return theme.palette.success.main
     }
+    return theme.palette.success.main
   }
 
-
-  const [temperatures, setTemperatures] = useState<Measurement[]>([]);
-
-  async function getTemperatures() {
-    const res = await fetch(`${apiUrl}/temperatures`);
-    res.json().then((res) => setTemperatures(res));
+  const handleSubmit = (evt: FormEvent<any>) => {
+    evt.preventDefault();
+    alert(`Submitting Name ${min}`)
   }
-
-  useEffect(() => {
-    getTemperatures();
-  }, []);
 
   return (
-    <Box marginTop={2}>
-      <Typography variant="h3">
-        Current Termperature:
-        </Typography>
-      <Box bgcolor={getBoxColor(temperature)}>
-        <Typography variant="h1">
-          {temperature}
-        </Typography>
+    <Box marginTop={2} display="flex" flexDirection="column" alignItems="center">
+      <Box width="100%" maxWidth="500px">
+        <Paper elevation={3} color="secondary">
+          <Box display="flex" justifyContent="center" bgcolor={getBoxColor(temperature)}>
+            <Typography variant="h1">{temperature}°</Typography>
+          </Box>
+        </Paper>
       </Box>
-      <input type="text" />
-      <Button onClick={getTemperatures} color="primary">Refresh</Button>
-      <input type="text" />
+      <Box marginTop={4} display="flex" flexDirection="row" alignItems="stretch" justifyContent="space-between" maxWidth="500px">
+        <TextField id="outlined-basic" label="Minimum" variant="outlined" type="number" value={min} onChange={(e) => setMin(parseInt(e.target.value))}/>
+        <Box width="100px" />
+        <TextField id="outlined-basic" label="Maximum" variant="outlined" value={max} onChange={(e) => setMax(parseInt(e.target.value))} />
+      </Box>
     </Box >
   );
 }
