@@ -1,5 +1,5 @@
 import React, { useEffect, useState, FormEvent } from "react";
-import { Typography, Box, Button, TextField, Paper } from "@material-ui/core";
+import { Typography, Box, Button, TextField, Paper, FormControl } from "@material-ui/core";
 import { LineChart, Line, XAxis, YAxis } from "recharts";
 import { Measurement } from "./models/measurement";
 import { apiUrl } from "./api";
@@ -9,6 +9,7 @@ export function Dashboard() {
   const [temperature, setTemperature] = useState(0);
   const [min, setMin] = useState(50);
   const [max, setMax] = useState(70);
+  const [errorText, setErrorText] = useState("")
 
   useEffect(() => {
     async function getTemperature() {
@@ -29,6 +30,14 @@ export function Dashboard() {
     return theme.palette.success.main
   }
 
+  const checkIntervallError = (minTemp: number, maxTemp: number) => {
+    if (maxTemp < minTemp) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   const handleSubmit = (evt: FormEvent<any>) => {
     evt.preventDefault();
     alert(`Submitting Name ${min}`)
@@ -39,14 +48,30 @@ export function Dashboard() {
       <Box width="100%" maxWidth="500px">
         <Paper elevation={3} color="secondary">
           <Box display="flex" justifyContent="center" bgcolor={getBoxColor(temperature)}>
-            <Typography variant="h1">{temperature}°</Typography>
+            <Typography variant="h1">{temperature} °C</Typography>
           </Box>
         </Paper>
       </Box>
       <Box marginTop={4} display="flex" flexDirection="row" alignItems="stretch" justifyContent="space-between" maxWidth="500px">
-        <TextField id="outlined-basic" label="Minimum" variant="outlined" type="number" value={min} onChange={(e) => setMin(parseInt(e.target.value))}/>
+        <TextField
+          error={checkIntervallError(min, max)}
+          id="outlined-basic"
+          label="Minimum"
+          variant="outlined"
+          type="number"
+          value={min}
+          onChange={(e) => setMin(parseInt(e.target.value))}
+        />
         <Box width="100px" />
-        <TextField id="outlined-basic" label="Maximum" variant="outlined" value={max} onChange={(e) => setMax(parseInt(e.target.value))} />
+        <TextField
+          error={checkIntervallError(min, max)}
+          id="outlined-basic"
+          label="Maximum"
+          variant="outlined"
+          type="number"
+          value={max}
+          onChange={(e) => setMax(parseInt(e.target.value))}
+        />
       </Box>
     </Box >
   );
