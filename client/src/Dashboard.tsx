@@ -38,11 +38,6 @@ export function Dashboard() {
     }
   }
 
-  const handleSubmit = (evt: FormEvent<any>) => {
-    evt.preventDefault();
-    alert(`Submitting Name ${min}`)
-  }
-
   return (
     <Box marginTop={2} display="flex" flexDirection="column" alignItems="center">
       <Box width="100%" maxWidth="500px">
