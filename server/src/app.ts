@@ -6,7 +6,6 @@ import "reflect-metadata";
 import {createConnection} from "typeorm";
 import { Measurement } from "./entities/measurement";
 
-
 dotenv.config();
 
 createConnection({
