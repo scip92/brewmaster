@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {  } from 'react';
 import './App.css';
-import { Button, Container, AppBar, Toolbar, Typography } from '@material-ui/core';
+import { Container, AppBar, Toolbar, Typography } from '@material-ui/core';
 import { Dashboard } from './Dashboard';
 
 function App() {
