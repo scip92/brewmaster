@@ -1,4 +1,3 @@
-  
 language: node_js
 cache: yarn
 node_js:
@@ -9,3 +8,11 @@ jobs:
     script: 
         - yarn build:server
         - yarn build:client
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file: README.md
+  skip_cleanup: true
+  draft: true
+  on:
+    branch: travis-ci-deploy
