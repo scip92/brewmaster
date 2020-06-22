@@ -1,4 +1,4 @@
-# Brewmaster Project
+# Brewmaster Project ![Build Status](https://travis-ci.com/scip92/brewmaster.svg?branch=master)
 
 Home Brewing Automation Software
 
