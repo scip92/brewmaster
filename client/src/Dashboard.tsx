@@ -1,7 +1,5 @@
-import React, { useEffect, useState, FormEvent } from "react";
-import { Typography, Box, Button, TextField, Paper, FormControl } from "@material-ui/core";
-import { LineChart, Line, XAxis, YAxis } from "recharts";
-import { Measurement } from "./models/measurement";
+import React, { useEffect, useState } from "react";
+import { Typography, Box, TextField, Paper } from "@material-ui/core";
 import { apiUrl } from "./api";
 import { theme } from "./theme";
 
@@ -9,7 +7,6 @@ export function Dashboard() {
   const [temperature, setTemperature] = useState(0);
   const [min, setMin] = useState(50);
   const [max, setMax] = useState(70);
-  const [errorText, setErrorText] = useState("")
 
   useEffect(() => {
     async function getTemperature() {
