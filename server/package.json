@@ -1,16 +1,19 @@
 {
     "name": "server",
     "version": "1.0.0",
+    "bin": "dist/index.js",
     "scripts": {
         "start": "npm run serve",
         "serve": "node dist/server.js",
         "watch-node": "nodemon dist/server.js",
         "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
         "build": "tsc",
-        "watch-ts": "tsc -w"
+        "watch-ts": "tsc -w",
+        "pkg": "pkg . --targets node12-win-x64"
     },
     "dependencies": {
         "express": "^4.17.1",
+        "pkg": "^4.4.8",
         "typeorm": "^0.2.25"
     },
     "devDependencies": {

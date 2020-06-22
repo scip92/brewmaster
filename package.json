@@ -10,7 +10,7 @@
   "scripts": {
     "server": "yarn workspace server watch",
     "client": "yarn workspace client start",
-    "build:server": "yarn workspace server build",
+    "build:server": "yarn workspace server build && yarn workspace server pkg",
     "build:client": "yarn workspace client build",
     "watch": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"blue.bold,yellow.bold\" \"yarn run server\" \"yarn run client\""
   },

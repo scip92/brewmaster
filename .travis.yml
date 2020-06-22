@@ -1,5 +1,7 @@
 language: node_js
 cache: yarn
+arch:
+  - amd64
 node_js:
 - '10'
 jobs:
