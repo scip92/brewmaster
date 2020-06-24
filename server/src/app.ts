@@ -3,28 +3,18 @@ import { Request, Response } from "express";
 import { noCors } from "./no-cors";
 import dotenv from 'dotenv';
 import "reflect-metadata";
-import {createConnection} from "typeorm";
-import { Measurement } from "./entities/measurement";
+import Datastore from "nedb";
 
 dotenv.config();
 
-createConnection({
-    type: "sqlite",
-    database: "./data/brewmaster.db",
-    entities: [
-        Measurement
-    ],
-    synchronize: true,
-    logging: false
-}).then(connection => {
-    // here you can start to work with your entities
-}).catch(error => console.log(error));
 
 var fs = require('fs');
 const app = express();
 const filePath = process.env.SENSOR_PATH;
 const useFake = (process.env.USE_FAKER === "true");
 const measurementInterval = parseFloat(process.env.MEASUREMENT_INTERVAL)
+const dataStore = new Datastore({autoload: true, filename: "./data/temperatures.db"});
+dataStore.loadDatabase();
  
 function readCurrentTemperature(): number {
     if (useFake) {
@@ -36,10 +26,7 @@ function readCurrentTemperature(): number {
 }
 
 setInterval(() => {
-    const newMeasurement = new Measurement();
-    newMeasurement.timestamp = new Date()
-    newMeasurement.value = readCurrentTemperature()
-    newMeasurement.save()
+    dataStore.insert({value: readCurrentTemperature(), timestamp: new Date()});
 }, 1000 * measurementInterval)
 
 app.set("port", process.env.PORT);
@@ -51,13 +38,13 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/temperature", async (req: Request, res: Response) => {
-    const allTemperatures = await Measurement.find();
-    res.send(JSON.stringify(allTemperatures[allTemperatures.length - 1]));
+    res.send(readCurrentTemperature());
 });
 
 app.get("/temperatures", async (req: Request, res: Response) => {
-    const allTemperatures = await Measurement.find();
-    res.send(JSON.stringify(allTemperatures));
+    dataStore.find({}, (err: Error, all: any) =>{
+        res.send(JSON.stringify(all));
+    })
 });
 
 export default app;
