@@ -1,6 +1,7 @@
 node_modules
 server/dist
 server/.env
-server/data/brewmaster.db
+server/data/*
+server/bundle/*
 **/yarn-error.log
 client/build
