@@ -21,8 +21,6 @@ thread = threading.Thread()
 
 def create_app():
     app: Flask = Flask(__name__)
-    app.config.update(TEMPLATES_AUTO_RELOAD=True)
-    app._static_folder = os.path.abspath("app/templates/static/")
     CORS(app)
 
 
