@@ -6,3 +6,4 @@ server/bundle/*
 **/yarn-error.log
 client/build
 .vscode
+**/__pycache__
