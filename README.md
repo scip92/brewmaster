@@ -7,6 +7,7 @@ Home Brewing Automation Software
 * git
 * yarn
 * nodejs / npm
+* python3
 
 ## Quick Start
 
