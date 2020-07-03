@@ -7,8 +7,10 @@ export function Dashboard() {
   const [temperature, setTemperature] = useState(0);
   const [tempMin, setTempMin] = useState(50)
   const [tempMax, setTempMax] = useState(70)
-  const [savedMin, setMin] = useState(50);
-  const [savedMax, setMax] = useState(70);
+  const [savedMin, setSavedMin] = useState(50);
+  const [savedMax, setSavedMax] = useState(70);
+  const [isMeasurementRunning, setRunning] = useState(true)
+  const [processStep, setStep] = useState("")
 
   useEffect(() => {
     async function getTemperature() {
@@ -29,12 +31,12 @@ export function Dashboard() {
     return theme.palette.success.main
   }
 
-  const getButtonColor = () => {
+  const tempSetMatch = () => {
     if (tempMin === savedMin && tempMax === savedMax) {
-      return "primary"
+      return true
     }
     else {
-      return "secondary"
+      return false
     }
   }
 
@@ -46,16 +48,18 @@ export function Dashboard() {
     }
   }
 
+
+
   return (
-    <Box marginTop={2} display="flex" flexDirection="column" alignItems="center">
+    <Box marginTop={3} display="flex" flexDirection="column" alignItems="center">
       <Box width="100%" maxWidth="500px">
         <Paper elevation={3} color="secondary">
           <Box display="flex" justifyContent="center" bgcolor={getBoxColor(temperature)}>
-            <Typography variant="h1">{temperature} °C</Typography>
+            <Typography variant="h2">{temperature} °C</Typography>
           </Box>
         </Paper>
       </Box>
-      <Box marginTop={4} display="flex" flexDirection="row" alignItems="stretch" justifyContent="space-between" maxWidth="500px">
+      <Box marginTop={4} display="flex" flexDirection="row" alignItems="stretch" justifyContent="center" maxWidth="500px">
         <TextField
           id="outlined-basic"
           label="Minimum"
@@ -66,14 +70,15 @@ export function Dashboard() {
         />
         <Box width="50px" />
         <Button
+          style={{ minWidth: '10rem' }}
           variant="contained"
-          color={getButtonColor()}
+          color={(tempSetMatch() ? "primary" :"secondary")}
           onClick={() => {
             if (checkIntervallError(tempMin, tempMax)) {
-              alert("Maximal value is smaller than minimal Value. Please Adjust. ")
+              alert("Maximum value is smaller than minimum Value. Please Adjust.")
             }
             else {
-              setMin(tempMin); setMax(tempMax);
+              setSavedMin(tempMin); setSavedMax(tempMax);
             }
           }}
         >
@@ -88,6 +93,26 @@ export function Dashboard() {
           value={tempMax}
           onChange={(e) => setTempMax(parseInt(e.target.value))}
         />
+      </Box>
+      <Box marginTop={4}>
+        <TextField
+          id="outlined-basic"
+          label="Process Name"
+          variant="outlined"
+          value={processStep}
+          onChange={(e) => setStep(e.target.value)}
+        />
+      </Box>
+      <Box marginTop={4}>
+        <Button
+          style={{ minWidth: '500px' }}
+          variant="contained"
+          disabled={(processStep === "" || !tempSetMatch())}
+          color={isMeasurementRunning ? "primary" : "secondary"}
+          onClick={() => setRunning(!isMeasurementRunning)}
+        >
+          {isMeasurementRunning ? "Start" : "Stop"}
+        </Button>
       </Box>
     </Box >
   );
