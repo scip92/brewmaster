@@ -1,7 +1,9 @@
 node_modules
 server/dist
-server/.env
+server/config.py
 server/data/*
 server/bundle/*
 **/yarn-error.log
 client/build
+.vscode
+**/__pycache__

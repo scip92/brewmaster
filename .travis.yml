@@ -7,5 +7,4 @@ jobs:
   include:
   - stage: build
     script: 
-        - yarn build:server
         - yarn build:client

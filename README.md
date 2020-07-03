@@ -7,6 +7,7 @@ Home Brewing Automation Software
 * git
 * yarn
 * nodejs / npm
+* python3
 
 ## Quick Start
 
@@ -18,9 +19,9 @@ Home Brewing Automation Software
 * Run `$ yarn server` to start development server
 * Run `$ yarn client` to start development client
 
-## .env file
+## Server Configuration
 
-* Copy & rename `.env.example` to `.env` in same path
+* Copy & rename `config_example.py` to `config.py` in same path
 * Fill out/check values (especially sensor path)
 
 Happy Coding :)
