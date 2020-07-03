@@ -98,20 +98,20 @@ export function Dashboard() {
         <TextField
           id="outlined-basic"
           label="Process Name"
-          variant="outlined"
+          variant="standard"
           value={processStep}
           onChange={(e) => setStep(e.target.value)}
         />
       </Box>
       <Box marginTop={4}>
         <Button
-          style={{ minWidth: '500px' }}
+          style={{ minWidth: '20rem' }}
           variant="contained"
           disabled={(processStep === "" || !tempSetMatch())}
           color={isMeasurementRunning ? "primary" : "secondary"}
           onClick={() => setRunning(!isMeasurementRunning)}
         >
-          {isMeasurementRunning ? "Start" : "Stop"}
+          {isMeasurementRunning ? "Start Measurement" : "Stop Measurement"}
         </Button>
       </Box>
     </Box >
