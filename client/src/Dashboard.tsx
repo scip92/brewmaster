@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, TextField, Paper } from "@material-ui/core";
+import { Typography, Box, TextField, Paper, Button } from "@material-ui/core";
 import { apiUrl } from "./api";
 import { theme } from "./theme";
 
 export function Dashboard() {
   const [temperature, setTemperature] = useState(0);
-  const [min, setMin] = useState(50);
-  const [max, setMax] = useState(70);
+  const [tempMin, setTempMin] = useState(50)
+  const [tempMax, setTempMax] = useState(70)
+  const [savedMin, setMin] = useState(50);
+  const [savedMax, setMax] = useState(70);
 
   useEffect(() => {
     async function getTemperature() {
@@ -19,12 +21,21 @@ export function Dashboard() {
   }, []);
 
   const getBoxColor = (currentTemperature: number) => {
-    if (currentTemperature < min) {
+    if (currentTemperature < savedMin) {
       return theme.palette.info.main
-    } if (currentTemperature > max) {
+    } if (currentTemperature > savedMax) {
       return theme.palette.warning.main
     }
     return theme.palette.success.main
+  }
+
+  const getButtonColor = () => {
+    if (tempMin === savedMin && tempMax === savedMax) {
+      return "primary"
+    }
+    else {
+      return "secondary"
+    }
   }
 
   const checkIntervallError = (minTemp: number, maxTemp: number) => {
@@ -46,23 +57,36 @@ export function Dashboard() {
       </Box>
       <Box marginTop={4} display="flex" flexDirection="row" alignItems="stretch" justifyContent="space-between" maxWidth="500px">
         <TextField
-          error={checkIntervallError(min, max)}
           id="outlined-basic"
           label="Minimum"
           variant="outlined"
           type="number"
-          value={min}
-          onChange={(e) => setMin(parseInt(e.target.value))}
+          value={tempMin}
+          onChange={(e) => setTempMin(parseInt(e.target.value))}
         />
-        <Box width="100px" />
+        <Box width="50px" />
+        <Button
+          variant="contained"
+          color={getButtonColor()}
+          onClick={() => {
+            if (checkIntervallError(tempMin, tempMax)) {
+              alert("Maximal value is smaller than minimal Value. Please Adjust. ")
+            }
+            else {
+              setMin(tempMin); setMax(tempMax);
+            }
+          }}
+        >
+          Set Values
+        </Button>
+        <Box width="50px" />
         <TextField
-          error={checkIntervallError(min, max)}
           id="outlined-basic"
           label="Maximum"
           variant="outlined"
           type="number"
-          value={max}
-          onChange={(e) => setMax(parseInt(e.target.value))}
+          value={tempMax}
+          onChange={(e) => setTempMax(parseInt(e.target.value))}
         />
       </Box>
     </Box >
