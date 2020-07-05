@@ -19,7 +19,7 @@ export function Dashboard() {
     }
     setInterval(() => {
       getTemperature();
-    }, 1000)
+    }, 2000)
   }, []);
 
   const getBoxColor = (currentTemperature: number) => {
