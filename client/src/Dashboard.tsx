@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, TextField, Paper } from "@material-ui/core";
+import { Typography, Box, TextField, Paper, Button } from "@material-ui/core";
 import { apiUrl } from "./api";
 import { theme } from "./theme";
 
 export function Dashboard() {
   const [temperature, setTemperature] = useState(0);
-  const [min, setMin] = useState(50);
-  const [max, setMax] = useState(70);
+  const [tempMin, setTempMin] = useState(50)
+  const [tempMax, setTempMax] = useState(70)
+  const [savedMin, setSavedMin] = useState(50);
+  const [savedMax, setSavedMax] = useState(70);
+  const [isMeasurementRunning, setRunning] = useState(true)
+  const [processStep, setStep] = useState("")
 
   useEffect(() => {
     async function getTemperature() {
@@ -19,12 +23,21 @@ export function Dashboard() {
   }, []);
 
   const getBoxColor = (currentTemperature: number) => {
-    if (currentTemperature < min) {
+    if (currentTemperature < savedMin) {
       return theme.palette.info.main
-    } if (currentTemperature > max) {
+    } if (currentTemperature > savedMax) {
       return theme.palette.warning.main
     }
     return theme.palette.success.main
+  }
+
+  const tempSetMatch = () => {
+    if (tempMin === savedMin && tempMax === savedMax) {
+      return true
+    }
+    else {
+      return false
+    }
   }
 
   const checkIntervallError = (minTemp: number, maxTemp: number) => {
@@ -35,35 +48,71 @@ export function Dashboard() {
     }
   }
 
+
+
   return (
-    <Box marginTop={2} display="flex" flexDirection="column" alignItems="center">
+    <Box marginTop={3} display="flex" flexDirection="column" alignItems="center">
       <Box width="100%" maxWidth="500px">
         <Paper elevation={3} color="secondary">
           <Box display="flex" justifyContent="center" bgcolor={getBoxColor(temperature)}>
-            <Typography variant="h1">{temperature} °C</Typography>
+            <Typography variant="h2">{temperature} °C</Typography>
           </Box>
         </Paper>
       </Box>
-      <Box marginTop={4} display="flex" flexDirection="row" alignItems="stretch" justifyContent="space-between" maxWidth="500px">
+      <Box marginTop={4} display="flex" flexDirection="row" alignItems="stretch" justifyContent="center" maxWidth="500px">
         <TextField
-          error={checkIntervallError(min, max)}
           id="outlined-basic"
           label="Minimum"
           variant="outlined"
           type="number"
-          value={min}
-          onChange={(e) => setMin(parseInt(e.target.value))}
+          value={tempMin}
+          onChange={(e) => setTempMin(parseInt(e.target.value))}
         />
-        <Box width="100px" />
+        <Box width="50px" />
+        <Button
+          style={{ minWidth: '10rem' }}
+          variant="contained"
+          color={(tempSetMatch() ? "primary" :"secondary")}
+          onClick={() => {
+            if (checkIntervallError(tempMin, tempMax)) {
+              alert("Maximum value is smaller than minimum Value. Please Adjust.")
+            }
+            else {
+              setSavedMin(tempMin); setSavedMax(tempMax);
+            }
+          }}
+        >
+          Set Values
+        </Button>
+        <Box width="50px" />
         <TextField
-          error={checkIntervallError(min, max)}
           id="outlined-basic"
           label="Maximum"
           variant="outlined"
           type="number"
-          value={max}
-          onChange={(e) => setMax(parseInt(e.target.value))}
+          value={tempMax}
+          onChange={(e) => setTempMax(parseInt(e.target.value))}
         />
+      </Box>
+      <Box marginTop={4}>
+        <TextField
+          id="outlined-basic"
+          label="Process Name"
+          variant="standard"
+          value={processStep}
+          onChange={(e) => setStep(e.target.value)}
+        />
+      </Box>
+      <Box marginTop={4}>
+        <Button
+          style={{ minWidth: '20rem' }}
+          variant="contained"
+          disabled={(processStep === "" || !tempSetMatch())}
+          color={isMeasurementRunning ? "primary" : "secondary"}
+          onClick={() => setRunning(!isMeasurementRunning)}
+        >
+          {isMeasurementRunning ? "Start Measurement" : "Stop Measurement"}
+        </Button>
       </Box>
     </Box >
   );
