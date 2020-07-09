@@ -51,7 +51,6 @@ export function Dashboard() {
   const [temperature, setTemperature] = useState(0);
   const [targetTemperature, setTargetTemperature] = useState(0);
   const [isMeasurementRunning, setRunning] = useState(true)
-  const [processStep, setStep] = useState("")
   const [duration, setDuration] = useState(5)
   const [timeLeft, setTimeLeft] = useState(10)
 
@@ -60,7 +59,7 @@ export function Dashboard() {
 
   useEffect(() => {
     stopwatch(setTimeLeft)
-  })
+  }, [])
 
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
