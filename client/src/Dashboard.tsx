@@ -95,7 +95,7 @@ export function Dashboard() {
     return theme.palette.success.main
   }
 
-  function msToTime(time: number) {
+/*   function msToTime(time: number) {
     let milliseconds = time % 1000;
     time = (time - milliseconds) / 1000;
     var seconds = time % 60;
@@ -104,7 +104,7 @@ export function Dashboard() {
     var hours = (time - minutes) / 60;
 
     return hours + ':' + ("0" + minutes).slice(-2) + ':' + ("0" + seconds).slice(-2) + '.' + ("000" + milliseconds).slice(-3);
-  }
+  } */
 
   return (
     <Box marginTop={3} display="flex" flexDirection="column" alignItems="center">
