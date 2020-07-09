@@ -4,41 +4,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { apiUrl } from "./api";
 import { theme } from "./theme";
 import { stopwatch } from "./stopwatch";
-
-
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: any) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+import { TabPanel, a11yProps } from "./TabPanel";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -94,17 +60,6 @@ export function Dashboard() {
     }
     return theme.palette.success.main
   }
-
-/*   function msToTime(time: number) {
-    let milliseconds = time % 1000;
-    time = (time - milliseconds) / 1000;
-    var seconds = time % 60;
-    time = (time - seconds) / 60;
-    var minutes = time % 60;
-    var hours = (time - minutes) / 60;
-
-    return hours + ':' + ("0" + minutes).slice(-2) + ':' + ("0" + seconds).slice(-2) + '.' + ("000" + milliseconds).slice(-3);
-  } */
 
   return (
     <Box marginTop={3} display="flex" flexDirection="column" alignItems="center">
@@ -174,28 +129,13 @@ export function Dashboard() {
               type="number"
               onChange={(e) => setDuration(parseInt(e.target.value))}
             />
-            <Button
-              color="primary"
-              variant="contained"
-            >
-              Set
-            </Button>
+            <Button color="primary" variant="contained" >Set</Button>
           </Box>
           <Box marginTop={4} width="100%" display="flex" justifyContent="center">
-            <Button
-              color="primary"
-              variant="contained"
-            >
-              {isMeasurementRunning ? "Start" : "Pause"}
-            </Button>
+            <Button color="primary" variant="contained" >{isMeasurementRunning ? "Start" : "Pause"}</Button>
             <Box width="2em">
             </Box>
-            <Button
-              color="primary"
-              variant="contained"
-            >
-              Reset
-            </Button>
+            <Button color="primary" variant="contained" >Reset</Button>
           </Box>
         </TabPanel>
       </div>
