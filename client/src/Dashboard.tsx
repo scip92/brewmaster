@@ -3,6 +3,9 @@ import { Box, Button, Paper, TextField, Typography, Tabs, Tab, AppBar } from "@m
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { apiUrl } from "./api";
 import { theme } from "./theme";
+import { stopwatch } from "./stopwatch";
+
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,9 +52,16 @@ export function Dashboard() {
   const [targetTemperature, setTargetTemperature] = useState(0);
   const [isMeasurementRunning, setRunning] = useState(true)
   const [processStep, setStep] = useState("")
+  const [duration, setDuration] = useState(5)
+  const [timeLeft, setTimeLeft] = useState(10)
 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+
+  useEffect(() => {
+    stopwatch(setTimeLeft)
+  })
+
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -86,6 +96,17 @@ export function Dashboard() {
     return theme.palette.success.main
   }
 
+  function msToTime(time: number) {
+    let milliseconds = time % 1000;
+    time = (time - milliseconds) / 1000;
+    var seconds = time % 60;
+    time = (time - seconds) / 60;
+    var minutes = time % 60;
+    var hours = (time - minutes) / 60;
+
+    return hours + ':' + ("0" + minutes).slice(-2) + ':' + ("0" + seconds).slice(-2) + '.' + ("000" + milliseconds).slice(-3);
+  }
+
   return (
     <Box marginTop={3} display="flex" flexDirection="column" alignItems="center">
       <div className={classes.root}>
@@ -110,26 +131,21 @@ export function Dashboard() {
             </Paper>
           </Box>
           <Box width="100%" marginTop={4} display="flex" justifyContent="center" alignItems="center">
-            <Box width="40%">
-              <TextField
-                id="outlined-basic"
-                label="Target Temperature"
-                variant="outlined"
-                value={targetTemperature}
-                type="number"
-                onChange={(e) => setTargetTemperature(parseInt(e.target.value))}
-              />
-            </Box>
-            <Box width="2em"></Box>
-            <Box>
-              <Button
-                onClick={saveTargetTemperature}
-                color="primary"
-                variant="contained"
-              >
-                Set
+            <TextField
+              id="outlined-basic"
+              label="Target Temperature"
+              variant="outlined"
+              value={targetTemperature}
+              type="number"
+              onChange={(e) => setTargetTemperature(parseInt(e.target.value))}
+            />
+            <Button
+              onClick={saveTargetTemperature}
+              color="primary"
+              variant="contained"
+            >
+              Set
             </Button>
-            </Box>
           </Box>
           <Box width="100%" marginTop={4} display="flex" justifyContent="center">
             <Button
@@ -146,13 +162,28 @@ export function Dashboard() {
           <Box width="100%">
             <Paper elevation={3} color="secondary">
               <Box display="flex" justifyContent="center" bgcolor={getBoxColor(temperature)}>
-                <Typography variant="h2">{temperature} °C</Typography>
+                <Typography variant="h2">{timeLeft}</Typography>
               </Box>
             </Paper>
           </Box>
+          <Box width="100%" marginTop={4} display="flex" justifyContent="center" alignItems="center">
+            <TextField
+              id="outlined-basic"
+              label="Timer"
+              variant="outlined"
+              value={duration}
+              type="number"
+              onChange={(e) => setDuration(parseInt(e.target.value))}
+            />
+            <Button
+              color="primary"
+              variant="contained"
+            >
+              Set
+            </Button>
+          </Box>
           <Box marginTop={4} width="100%" display="flex" justifyContent="center">
             <Button
-              onClick={saveTargetTemperature}
               color="primary"
               variant="contained"
             >
@@ -161,7 +192,6 @@ export function Dashboard() {
             <Box width="2em">
             </Box>
             <Button
-              onClick={saveTargetTemperature}
               color="primary"
               variant="contained"
             >
