@@ -4,17 +4,17 @@ import { apiUrl } from "./api";
 
 export function ProcessPanel() {
 
-  const [currentProcess, setCurrentProcess] = useState("");
+  const [currentProcess, setCurrentProcess] = useState("Not set yet");
   const [processToSave, setProcessToSave] = useState("");
 
   useEffect(() => {
-    async function getTemperature() {
-      const res = await fetch(`${apiUrl}/process`);
+    async function getProcess() {
+      const res = await fetch(`${apiUrl}/data`);
       res.json().then((res) => setCurrentProcess(res.process));
     }
 
     setInterval(() => {
-      getTemperature();
+      getProcess();
     }, 2000)
   }, []);
 
@@ -23,21 +23,28 @@ export function ProcessPanel() {
   }, [])
 
   const saveTargetTemperature = () => {
-    fetch(`${apiUrl}/process`, { headers: { "Content-Type": "application/json" }, body: JSON.stringify({ "new_value": processToSave }), method: "post" }).then(res => res.json()).then(response => setProcessToSave(response));
+    fetch(
+      `${apiUrl}/process`,
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ "new_value": processToSave }), method: "post"
+      })
+      .then(res => res.json())
+      .then(response => setProcessToSave(response));
   }
 
   return <>
     <Box width="100%">
       <Paper elevation={3} color="secondary">
         <Box display="flex" justifyContent="center">
-          <Typography variant="h2">{currentProcess}</Typography>
+          <Typography variant="h4">{currentProcess}</Typography>
         </Box>
       </Paper>
     </Box>
     <Box width="100%" marginTop={4} display="flex" justifyContent="center" alignItems="center">
       <TextField
         id="outlined-basic"
-        label="Proccess name"
+        label="Process name"
         variant="outlined"
         value={processToSave}
         type="string"

@@ -1,5 +1,4 @@
 import datetime
-import json
 from .display import get_display
 from .sensor import get_temperature_sensor
 from tinydb import TinyDB
@@ -23,9 +22,9 @@ def run_background_task():
         target_temperature = targets_db.all()[-1]['target']
 
     if len(processes_db) == 0:
-        process = ""
+        process = "not set yet"
     else:
-        process = targets_db.all()[-1]['process']
-
+        process = processes_db.all()[-1]['process']
+    print(process)
     temperatures_db.insert(
         {'measured_temperature': current_temperature, 'timestamp': current_time, 'target_temperature': target_temperature, 'process': process})
