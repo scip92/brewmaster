@@ -16,7 +16,7 @@ export function Dashboard() {
     useEffect(() => {
         async function getTemperature() {
             const res = await fetch(`${apiUrl}/temperature`);
-            res.json().then((res) => setTemperature(res.value.toFixed(1)));
+            res.json().then((res) => setTemperature(res.measured_temperature.toFixed(1)));
         }
 
         setInterval(() => {
