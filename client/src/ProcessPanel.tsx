@@ -1,62 +1,51 @@
-import React, { useState, useEffect } from "react"
-import { Box, Paper, Typography, TextField, Button } from "@material-ui/core"
-import { apiUrl } from "./api";
+import React, {useState, useEffect} from "react"
+import {Box, Paper, Typography, TextField, Button} from "@material-ui/core"
+import {apiUrl} from "./api";
+import {Data} from "./models/data";
 
-export function ProcessPanel() {
+export function ProcessPanel(props: { data: Data }) {
 
-  const [currentProcess, setCurrentProcess] = useState("Not set yet");
-  const [processToSave, setProcessToSave] = useState("");
+    const [processToSave, setProcessToSave] = useState("");
 
-  useEffect(() => {
-    async function getProcess() {
-      const res = await fetch(`${apiUrl}/data`);
-      res.json().then((res) => setCurrentProcess(res.process));
+    useEffect(() => {
+        fetch(`${apiUrl}/process`).then(res => res.json()).then(response => setProcessToSave(response));
+    }, [])
+
+    const saveTargetTemperature = () => {
+        fetch(
+            `${apiUrl}/process`,
+            {
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({"new_value": processToSave}), method: "post"
+            })
+            .then(res => res.json())
+            .then(response => setProcessToSave(response));
     }
 
-    setInterval(() => {
-      getProcess();
-    }, 2000)
-  }, []);
-
-  useEffect(() => {
-    fetch(`${apiUrl}/process`).then(res => res.json()).then(response => setProcessToSave(response));
-  }, [])
-
-  const saveTargetTemperature = () => {
-    fetch(
-      `${apiUrl}/process`,
-      {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "new_value": processToSave }), method: "post"
-      })
-      .then(res => res.json())
-      .then(response => setProcessToSave(response));
-  }
-
-  return <>
-    <Box width="100%">
-      <Paper elevation={3} color="secondary">
-        <Box display="flex" justifyContent="center">
-          <Typography variant="h4">{currentProcess}</Typography>
+    return <>
+        <Box width="100%">
+            <Paper elevation={3} color="secondary">
+                <Box display="flex" justifyContent="center">
+                    <Typography variant="h4">{props.data.process}</Typography>
+                </Box>
+            </Paper>
         </Box>
-      </Paper>
-    </Box>
-    <Box width="100%" marginTop={4} display="flex" justifyContent="center" alignItems="center">
-      <TextField
-        id="outlined-basic"
-        label="Process name"
-        variant="outlined"
-        value={processToSave}
-        type="string"
-        onChange={(e) => setProcessToSave(e.target.value)}
-      />
-      <Button
-        onClick={saveTargetTemperature}
-        color="primary"
-        variant="contained"
-      >
-        Set
-        </Button>
-    </Box>
-  </>
+        <Box width="100%" marginTop={4} display="flex" justifyContent="center" alignItems="center">
+            <TextField
+                id="outlined-basic"
+                label="Process name"
+                variant="outlined"
+                value={processToSave}
+                type="string"
+                onChange={(e) => setProcessToSave(e.target.value)}
+            />
+            <Button
+                onClick={saveTargetTemperature}
+                color="primary"
+                variant="contained"
+            >
+                Set
+            </Button>
+        </Box>
+    </>
 }

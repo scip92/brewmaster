@@ -1,26 +1,14 @@
-import React, { useState, useEffect } from "react"
-import { Box, Paper, Typography, TextField, Button } from "@material-ui/core"
-import { apiUrl } from "./api";
-import { theme } from "./theme";
+import React, {useEffect, useState} from "react"
+import {Box, Button, Paper, TextField, Typography} from "@material-ui/core"
+import {apiUrl} from "./api";
+import {theme} from "./theme";
+import {Data} from "./models/data";
 
 
+export function TemperaturePanel(props: { data: Data}) {
 
-export function TemperaturePanel() {
-
-  const [temperature, setTemperature] = useState(0);
   const [targetTemperature, setTargetTemperature] = useState(0);
   const [isMeasurementRunning, setRunning] = useState(true)
-
-  useEffect(() => {
-    async function getTemperature() {
-      const res = await fetch(`${apiUrl}/data`);
-      res.json().then((res) => setTemperature(res.measured_temperature.toFixed(1)));
-    }
-
-    setInterval(() => {
-      getTemperature();
-    }, 2000)
-  }, []);
 
   useEffect(() => {
     fetch(`${apiUrl}/target-temperature`).then(res => res.json()).then(response => setTargetTemperature(response));
@@ -43,8 +31,8 @@ export function TemperaturePanel() {
   return <>
     <Box width="100%">
       <Paper elevation={3} color="secondary">
-        <Box display="flex" justifyContent="center" bgcolor={getBoxColor(temperature)}>
-          <Typography variant="h2">{temperature} °C</Typography>
+        <Box display="flex" justifyContent="center" bgcolor={getBoxColor(props.data.measured_temperature)}>
+          <Typography variant="h2">{props.data.measured_temperature} °C</Typography>
         </Box>
       </Paper>
     </Box>
