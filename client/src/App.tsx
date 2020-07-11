@@ -8,7 +8,7 @@ function App() {
     <>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h3">Brewmaster</Typography>
+          <Typography variant="h4">Brewmaster</Typography>
         </Toolbar>
       </AppBar>
       <Container>

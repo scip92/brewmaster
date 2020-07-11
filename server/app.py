@@ -10,15 +10,17 @@ dataLock = threading.Lock()
 thread = threading.Thread()
 temperatures_db = TinyDB(database_path+'temperatures.db')
 targets_db = TinyDB(database_path+'targets.db')
+processes_db = TinyDB(database_path+'processes.db')
 
-targetValue = 57
+targetValue = 40
+process = "not set yet"
 
 
 def create_app() -> Flask:
     app: Flask = Flask(__name__)
     CORS(app)
 
-    @app.route("/temperature")
+    @app.route("/data")
     def temp():
         all_temperatures = temperatures_db.all()
         return jsonify(all_temperatures[-1])
@@ -32,6 +34,21 @@ def create_app() -> Flask:
             if new_target:
                 targetValue = new_target
                 current_time = str(datetime.datetime.now())
-                targets_db.insert({'target': targetValue, 'timestamp': current_time})
+                targets_db.insert(
+                    {'target': targetValue, 'timestamp': current_time})
         return str(targetValue)
+
+    @app.route("/process", methods=["GET", "POST"])
+    def process():
+        global process
+        if request.method == "POST":
+            new_process = request.get_json()["new_value"]
+            print("New process step set:", new_process)
+            if new_process:
+                process = new_process
+                current_time = str(datetime.datetime.now())
+                processes_db.insert(
+                    {'process': process, 'timestamp': current_time})
+        return str(process)
+
     return app
