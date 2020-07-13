@@ -3,6 +3,7 @@ import threading
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from tinydb import TinyDB
+from .sensor import get_temperature_sensor
 
 from server import database_path
 
@@ -11,6 +12,7 @@ thread = threading.Thread()
 temperatures_db = TinyDB(database_path+'temperatures.db')
 targets_db = TinyDB(database_path+'targets.db')
 processes_db = TinyDB(database_path+'processes.db')
+temp_sensor = get_temperature_sensor()
 
 targetValue = 40
 process = "not set yet"
@@ -20,10 +22,10 @@ def create_app() -> Flask:
     app: Flask = Flask(__name__)
     CORS(app)
 
-    @app.route("/data")
+    @app.route("/current_temperature")
     def temp():
-        all_temperatures = temperatures_db.all()
-        return jsonify(all_temperatures[-1])
+        current_temperature = temp_sensor.read_temperature()
+        return jsonify(current_temperature)
 
     @app.route("/target-temperature", methods=["GET", "POST"])
     def target_value():

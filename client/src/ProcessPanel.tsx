@@ -1,51 +1,68 @@
-import React, {useState, useEffect} from "react"
-import {Box, Paper, Typography, TextField, Button} from "@material-ui/core"
-import {apiUrl} from "./api";
-import {Data} from "./models/data";
+import React, { useState, useEffect } from "react"
+import { Box, Paper, Typography, TextField, Button } from "@material-ui/core"
+import { apiUrl } from "./api";
 
-export function ProcessPanel(props: { data: Data }) {
+export function ProcessPanel() {
 
-    const [processToSave, setProcessToSave] = useState("");
+  const [currentProcess, setCurrentProcess] = useState("not set yet")
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [processToSave, setProcessToSave] = useState("");
 
-    useEffect(() => {
-        fetch(`${apiUrl}/process`).then(res => res.json()).then(response => setProcessToSave(response));
-    }, [])
+  const getData = async () => {
+    const res = await fetch(`${apiUrl}/process`);
+    return res.json() as Promise<string>;
+  }
 
-    const saveTargetTemperature = () => {
-        fetch(
-            `${apiUrl}/process`,
-            {
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({"new_value": processToSave}), method: "post"
-            })
-            .then(res => res.json())
-            .then(response => setProcessToSave(response));
+  useEffect(() => {
+    if (isInitialized) {
+      return;
     }
+    setIsInitialized(true);
+    setInterval(() => {
+      getData().then(setCurrentProcess);
+    }, 1000)
 
-    return <>
-        <Box width="100%">
-            <Paper elevation={3} color="secondary">
-                <Box display="flex" justifyContent="center">
-                    <Typography variant="h4">{props.data.process}</Typography>
-                </Box>
-            </Paper>
+  }, []);
+
+  useEffect(() => {
+    fetch(`${apiUrl}/process`).then(res => res.json()).then(response => setProcessToSave(response));
+  }, [])
+
+  const saveTargetTemperature = () => {
+    fetch(
+      `${apiUrl}/process`,
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ "new_value": processToSave }), method: "post"
+      })
+      .then(res => res.json())
+      .then(response => setProcessToSave(response));
+  }
+
+  return <>
+    <Box width="100%">
+      <Paper elevation={3} color="secondary">
+        <Box display="flex" justifyContent="center">
+          <Typography variant="h4">{currentProcess}</Typography>
         </Box>
-        <Box width="100%" marginTop={4} display="flex" justifyContent="center" alignItems="center">
-            <TextField
-                id="outlined-basic"
-                label="Process name"
-                variant="outlined"
-                value={processToSave}
-                type="string"
-                onChange={(e) => setProcessToSave(e.target.value)}
-            />
-            <Button
-                onClick={saveTargetTemperature}
-                color="primary"
-                variant="contained"
-            >
-                Set
+      </Paper>
+    </Box>
+    <Box width="100%" marginTop={4} display="flex" justifyContent="center" alignItems="center">
+      <TextField
+        id="outlined-basic"
+        label="Process name"
+        variant="outlined"
+        value={processToSave}
+        type="string"
+        onChange={(e) => setProcessToSave(e.target.value)}
+      />
+      <Button
+        onClick={saveTargetTemperature}
+        color="primary"
+        variant="contained"
+      >
+        Set
             </Button>
-        </Box>
-    </>
+    </Box>
+  </>
 }
