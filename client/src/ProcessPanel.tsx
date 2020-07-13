@@ -2,27 +2,9 @@ import React, { useState, useEffect } from "react"
 import { Box, Paper, Typography, TextField, Button } from "@material-ui/core"
 import { apiUrl } from "./api";
 
-export function ProcessPanel() {
+export function ProcessPanel(props: { currentProcess: string }) {
 
-  const [currentProcess, setCurrentProcess] = useState("not set yet")
-  const [isInitialized, setIsInitialized] = useState(false);
   const [processToSave, setProcessToSave] = useState("");
-
-  const getData = async () => {
-    const res = await fetch(`${apiUrl}/process`);
-    return res.json() as Promise<string>;
-  }
-
-  useEffect(() => {
-    if (isInitialized) {
-      return;
-    }
-    setIsInitialized(true);
-    setInterval(() => {
-      getData().then(setCurrentProcess);
-    }, 1000)
-
-  }, []);
 
   useEffect(() => {
     fetch(`${apiUrl}/process`).then(res => res.json()).then(response => setProcessToSave(response));
@@ -43,7 +25,7 @@ export function ProcessPanel() {
     <Box width="100%">
       <Paper elevation={3} color="secondary">
         <Box display="flex" justifyContent="center">
-          <Typography variant="h4">{currentProcess}</Typography>
+          <Typography variant="h4">{props.currentProcess}</Typography>
         </Box>
       </Paper>
     </Box>
