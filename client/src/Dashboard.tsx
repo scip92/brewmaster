@@ -25,7 +25,7 @@ export function Dashboard() {
 
   const getCurrentTemperature = async () => {
     const res = await fetch(`${apiUrl}/current_temperature`);
-    return res.json() as Promise<number>;
+     return res.json() as Promise<any>;
   }
 
   const getCurrentProcess = async () => {
@@ -44,7 +44,7 @@ export function Dashboard() {
     }
     setIsInitialized(true)
     setInterval(() => {
-      getCurrentTemperature().then(setCurrentTemperature);
+      getCurrentTemperature().then((res) => setCurrentTemperature(res.current_temperature));
       getCurrentProcess().then(setCurrentProcess);
       getTargetTemperature().then(setTargetTemperature);
     }, 1000)
