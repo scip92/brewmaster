@@ -3,10 +3,11 @@ import { Box, Paper, Typography, Button, TextField } from "@material-ui/core"
 
 export function Stopwatch() {
 
-  const [startTime, setstartTime] = useState(new Date().getTime())
   const [timeElapsed, setTimeElapsed] = useState(0)
   const [duration, setDuration] = useState(2000)
   const [isRunning, setIsRunning] = useState(true)
+
+  const startTime = new Date().getTime()
 
   const millisecondsToString = (ms: number) => {
     return new Date(ms).toISOString().slice(14, -3);
@@ -17,7 +18,7 @@ export function Stopwatch() {
       const newTimeElapsed = new Date().getTime() - startTime
       setTimeElapsed(newTimeElapsed);
     }, 10)
-  }, [startTime]);
+  }, []);
 
   return <>
     <Box width="100%">
