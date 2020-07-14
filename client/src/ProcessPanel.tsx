@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Box, Paper, Typography, TextField, Button } from "@material-ui/core"
 import { apiUrl } from "./api";
 
 export function ProcessPanel(props: { currentProcess: string }) {
 
-  const [processToSave, setProcessToSave] = useState("");
+  const [processToSave, setProcessToSave] = useState("Not set yet");
 
-  useEffect(() => {
-    fetch(`${apiUrl}/process`).then(res => res.json()).then(response => setProcessToSave(response));
-  }, [])
-
-  const saveTargetTemperature = () => {
+  const saveProcess = () => {
     fetch(
       `${apiUrl}/process`,
       {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ "new_value": processToSave }), method: "post"
       })
-      .then(res => res.json())
-      .then(response => setProcessToSave(response));
   }
 
   return <>
@@ -39,7 +33,7 @@ export function ProcessPanel(props: { currentProcess: string }) {
         onChange={(e) => setProcessToSave(e.target.value)}
       />
       <Button
-        onClick={saveTargetTemperature}
+        onClick={saveProcess}
         color="primary"
         variant="contained"
       >

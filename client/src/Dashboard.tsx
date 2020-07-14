@@ -25,17 +25,17 @@ export function Dashboard() {
 
   const getCurrentTemperature = async () => {
     const res = await fetch(`${apiUrl}/current_temperature`);
-     return res.json() as Promise<any>;
+    return res.json() as Promise<{"current_temperature": number}>;
   }
 
   const getCurrentProcess = async () => {
     const res = await fetch(`${apiUrl}/process`);
-    return res.json() as Promise<string>;
+    return res.json() as Promise<{"current_process": string}>;
   }
 
   const getTargetTemperature = async () => {
     const res = await fetch(`${apiUrl}/target_temperature`);
-    return res.json() as Promise<number>;
+    return res.json() as Promise<{"target_temperature": number}>;
   }
 
   useEffect(() => {
@@ -45,11 +45,11 @@ export function Dashboard() {
     setIsInitialized(true)
     setInterval(() => {
       getCurrentTemperature().then((res) => setCurrentTemperature(res.current_temperature));
-      getCurrentProcess().then(setCurrentProcess);
-      getTargetTemperature().then(setTargetTemperature);
+      getCurrentProcess().then((res) => setCurrentProcess(res.current_process));
+      getTargetTemperature().then((res) => setTargetTemperature(res.target_temperature));
     }, 1000)
 
-  }, []);
+  }, [isInitialized]);
 
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
