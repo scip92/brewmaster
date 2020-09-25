@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Box, Paper, Typography, Button, TextField } from "@material-ui/core"
 
 export function Stopwatch() {
-
-  const [startTime, setstartTime] = useState(new Date().getTime())
+  const [startTime, setStartTime] = useState(new Date().getTime())
   const [timeElapsed, setTimeElapsed] = useState(0)
   const [duration, setDuration] = useState(2000)
   const [isRunning, setIsRunning] = useState(true)
@@ -43,7 +42,11 @@ export function Stopwatch() {
         style={{ minWidth: '16rem' }}
         color="primary"
         variant="contained"
-        onClick={() => setIsRunning(!isRunning)}
+        onClick={() => {
+          setIsRunning(!isRunning)
+          setStartTime(new Date().getTime())
+        }
+        }
       >
         {isRunning ? "Pause" : "Start"}
       </Button>
