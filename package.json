@@ -5,7 +5,7 @@
   "private": true,
   "workspaces": [ "client" ],
   "scripts": {
-    "server": "python main.py",
+    "server": "python3 main.py",
     "client": "yarn workspace client start",
     "build:client": "yarn workspace client build"
   },

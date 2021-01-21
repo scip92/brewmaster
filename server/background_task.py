@@ -1,30 +1,22 @@
-import datetime
+from .data import get_target_temperature
 from .display import get_display
+from .heater import get_heater
 from .sensor import get_temperature_sensor
-from tinydb import TinyDB
-from . import database_path
 
-temperatures_db = TinyDB(database_path+'temperatures.db')
-targets_db = TinyDB(database_path+'targets.db')
-processes_db = TinyDB(database_path+'processes.db')
+
 temp_sensor = get_temperature_sensor()
 display = get_display()
+heater = get_heater()
 
 
 def run_background_task():
     current_temperature = temp_sensor.read_temperature()
-    current_time = str(datetime.datetime.now())
     display.display_text(str(current_temperature))
 
-    if len(targets_db) == 0:
-        target_temperature = 0
+    if current_temperature < get_target_temperature():
+        heater.turn_on()
     else:
-        target_temperature = targets_db.all()[-1]['target']
+        heater.turn_off()
 
-    if len(processes_db) == 0:
-        process = "not set yet"
-    else:
-        process = processes_db.all()[-1]['process']
-    print(process)
-    temperatures_db.insert(
-        {'measured_temperature': current_temperature, 'timestamp': current_time, 'target_temperature': target_temperature, 'process': process})
+    print("Target Temperature:" + str(get_target_temperature()))
+

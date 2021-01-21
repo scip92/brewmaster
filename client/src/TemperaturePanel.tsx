@@ -1,27 +1,32 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, Button, Paper, TextField, Typography } from "@material-ui/core"
-import { apiUrl } from "./api";
 import { theme } from "./theme";
+import { getCurrentTemperature, getTargetTemperature, saveTargetTemperature } from "./api/client";
 
+export function TemperaturePanel() {
+  const [currentTemperature, setCurrentTemperature] = useState(0)
+  const [targetTemperature, setTargetTemperature] = useState(50)
+  const [isInitialized, setIsInitialized] = useState(false);
+  
+  useEffect(() => {
+    if (isInitialized) {
+      getTargetTemperature().then((res) => setTargetTemperature(res.target_temperature));
+      return;
+    }
 
-export function TemperaturePanel(props: { currentTemperature: number; targetTemperature: number }) {
+    setIsInitialized(true)
+    setInterval(() => {
+      getCurrentTemperature().then((res) => setCurrentTemperature(res.current_temperature));
+    }, 1000)
 
-  const [targetToSet, setTargetToSet] = useState(50);
-  const [isMeasurementRunning, setRunning] = useState(true)
+  }, [isInitialized]);
 
-  const saveTargetTemperature = () => {
-    fetch(`${apiUrl}/target_temperature`,
-      {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "new_value": targetToSet }), method: "post"
-      })
-  }
-
+  
   const getBoxColor = (currentTemperature: number) => {
-    if (currentTemperature < props.targetTemperature - 3) {
+    if (currentTemperature < targetTemperature - 3) {
       return theme.palette.info.main
     }
-    if (currentTemperature > props.targetTemperature + 3) {
+    if (currentTemperature > targetTemperature + 3) {
       return theme.palette.warning.main
     }
     return theme.palette.success.main
@@ -30,40 +35,26 @@ export function TemperaturePanel(props: { currentTemperature: number; targetTemp
   return <>
     <Box width="100%">
       <Paper elevation={3} color="secondary">
-        <Box display="flex" justifyContent="center" bgcolor={getBoxColor(props.currentTemperature)}>
-          <Typography variant="h2">{props.currentTemperature} °C</Typography>
+        <Box display="flex" justifyContent="center" bgcolor={getBoxColor(currentTemperature)}>
+          <Typography variant="h2">{currentTemperature} °C</Typography>
         </Box>
       </Paper>
     </Box>
     <Box width="100%" marginTop={4} display="flex" justifyContent="center" alignItems="center">
+      <Box>
+
+      </Box>
       <TextField
         id="outlined-basic"
         label="Target Temperature"
         variant="outlined"
-        value={targetToSet}
+        value={targetTemperature}
         type="number"
-        onChange={(e) => setTargetToSet(parseInt(e.target.value))}
+        onChange={(e) => setTargetTemperature(parseInt(e.target.value))}
       />
-      <Button
-        onClick={saveTargetTemperature}
-        color="primary"
-        variant="contained"
-      >
-        Set
-        </Button>
-    </Box>
-    <Box width="100%" display="flex" justifyContent="center" style={{ minHeight: '2rem' }}    >
-      <Typography variant="body2" color="error">{targetToSet === props.targetTemperature ? "" : "New target not set yet"}</Typography>
-    </Box>
-    <Box width="100%" marginTop={4} display="flex" justifyContent="center">
-      <Button
-        style={{ minWidth: '16rem' }}
-        variant="contained"
-        color={isMeasurementRunning ? "primary" : "secondary"}
-        onClick={() => setRunning(!isMeasurementRunning)}
-      >
-        {isMeasurementRunning ? "Start Measurement" : "Stop Measurement"}
-      </Button>
+      <Box marginLeft={2}>
+        <Button onClick={() => saveTargetTemperature(targetTemperature)} color="primary" variant="contained">Set</Button>
+      </Box>
     </Box>
   </>
 }

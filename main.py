@@ -8,7 +8,7 @@ class Config(object):
             'id': 'background_task',
             'func': 'main:background_task',
             'trigger': 'interval',
-            'seconds': 1
+            'seconds': 5
         }
     ]
 
@@ -25,4 +25,4 @@ if __name__ == '__main__':
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
-    app.run(debug=True, host='0.0.0.0', port=port_number)
+    app.run(debug=True, host='0.0.0.0', port=port_number, use_reloader=False)
