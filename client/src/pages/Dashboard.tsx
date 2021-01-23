@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { TemperaturePanel } from "./TemperaturePanel";
+import { TemperaturePanel } from "../components/TemperaturePanel";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {

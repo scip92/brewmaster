@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Box, Button, Paper, TextField, Typography } from "@material-ui/core"
-import { theme } from "./theme";
-import { getCurrentTemperature, getTargetTemperature, saveTargetTemperature } from "./api/client";
+import { theme } from "../theme";
+import { getCurrentTemperature, getTargetTemperature, saveTargetTemperature } from "../api/client";
 
 export function TemperaturePanel() {
   const [currentTemperature, setCurrentTemperature] = useState(0)
