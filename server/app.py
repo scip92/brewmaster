@@ -1,9 +1,12 @@
+import logging
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from .sensor import get_temperature_sensor
 from .data import get_target_temperature, set_target_temperature
 
 temp_sensor = get_temperature_sensor()
+logging.basicConfig(filename='log.txt', format='%(asctime)s - %(message)s', level=logging.INFO)
 
 
 def create_app() -> Flask:
@@ -20,6 +23,7 @@ def create_app() -> Flask:
         if request.method == "POST":
             new_value = request.get_json()["new_value"]
             set_target_temperature(new_value)
+            logging.info("New target value:" + str(new_value))
         return jsonify(target_temperature=get_target_temperature())
 
     return app

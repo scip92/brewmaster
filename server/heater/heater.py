@@ -1,3 +1,4 @@
+import logging
 from ..config import use_fake, heater_port
 
 if not use_fake:
@@ -7,11 +8,10 @@ if not use_fake:
 
 
 class Heater:
-
     def turn_on(self) -> None:
-        print('Heater: ON')
+        logging.info("Heater - on")
         GPIO.output(heater_port, GPIO.HIGH)
 
     def turn_off(self) -> None:
-        print('Heater: OFF')
+        logging.info("Heater - off")
         GPIO.output(heater_port, GPIO.LOW)
