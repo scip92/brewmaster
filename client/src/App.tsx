@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import {Container, AppBar, Toolbar, Typography, Box} from '@material-ui/core';
-import {Dashboard} from './pages/Dashboard';
-import {Sidebar} from './shared/Sidebar';
+import { Container, AppBar, Toolbar, Typography, Box } from '@material-ui/core';
+import { Dashboard } from './pages/Dashboard';
+import { Sidebar } from './shared/Sidebar';
 import MenuIcon from '@material-ui/icons/Menu';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {Settings} from "./pages/Settings";
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Settings } from "./pages/Settings";
 
 function App(): JSX.Element {
     const [isOpen, setIsOpen] = useState(false);

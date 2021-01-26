@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react"
-import {Box, Paper, Typography} from "@material-ui/core"
-import {theme} from "../theme";
-import {getCurrentTemperature, getTargetTemperature} from "../api/client";
+import React, { useEffect, useState } from "react"
+import { Box, Paper, Typography } from "@material-ui/core"
+import { theme } from "../theme";
+import { getCurrentTemperature, getTargetTemperature } from "../api/client";
 import { withStyles } from "@material-ui/core/styles";
 import { PropsWithChildren } from "react";
 
@@ -25,7 +25,7 @@ export function TemperaturePanel(): React.ReactElement {
         setIsInitialized(true)
         setInterval(() => {
             getCurrentTemperature().then((res) => setCurrentTemperature(res.current_temperature));
-        }, 1000)
+        }, 2000)
 
     }, [isInitialized]);
 
@@ -40,7 +40,7 @@ export function TemperaturePanel(): React.ReactElement {
         return theme.palette.success.main
     }
 
-    function TemperatureBox(props: PropsWithChildren<{ bgColor: any }> ) {
+    function TemperatureBox(props: PropsWithChildren<{ bgColor: any }>) {
         return (
           <Paper square elevation={3} color="secondary">
               <Box display="flex" p={5} justifyContent="center" bgcolor={props.bgColor}>

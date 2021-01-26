@@ -1,6 +1,6 @@
-import {Box, Button, Container, TextField} from "@material-ui/core";
-import React, {useEffect, useState} from "react";
-import {getTargetTemperature, saveTargetTemperature} from "../api/client";
+import { Box, Button, Container, TextField } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { getTargetTemperature, saveTargetTemperature } from "../api/client";
 
 export function Settings(): JSX.Element {
     const [targetTemperature, setTargetTemperature] = useState(50)
