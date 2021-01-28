@@ -1,41 +1,44 @@
-import { Box, Button, Container, TextField } from "@material-ui/core";
+import { Box, Button, Container, FormControl, FormLabel, Switch, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { getTargetTemperature, saveTargetTemperature } from "../api/client";
+import { getStirrer, getTargetTemperature, saveTargetTemperature, setStirrer } from "../api/client";
+import { Stirrer } from "../models/Stirrer";
 
 export function Settings(): JSX.Element {
-    const [targetTemperature, setTargetTemperature] = useState(50)
-    const [isInitialized, setIsInitialized] = useState(false);
+    const [targetTemperature, setTargetTemperature] = useState(50);
+    const [isStirrerOn, setIsStirrerOn] = useState(false);
 
     useEffect(() => {
-        if (isInitialized) {
-            getTargetTemperature().then((res) => setTargetTemperature(res.target_temperature));
-            return;
-        }
-        setIsInitialized(true)
-    }, [isInitialized]);
+        getTargetTemperature().then((res) => setTargetTemperature(res.target_temperature));
+        getStirrer().then((res: Stirrer) => setIsStirrerOn(res.enabled));
+    }, []);
+
+    const onStirrerChange = async (_: any, isChecked: boolean) => {
+        await setStirrer(isChecked);
+        setIsStirrerOn(isChecked);
+    }
 
     return (
-      <Container>
-          <Box width="100%"
-               marginTop={4}
-               display="flex"
-               justifyContent="center"
-               alignItems="center">
+      <Container maxWidth="sm">
+          <Box mt={4} display="flex" alignItems="center">
               <TextField
                 id="outlined-basic"
                 label="Target Temperature"
-                variant="outlined"
                 type="number"
+                variant="outlined"
                 value={targetTemperature}
                 onChange={(e) => setTargetTemperature(parseInt(e.target.value))}
               />
               <Box marginLeft={2}>
                   <Button onClick={() => saveTargetTemperature(targetTemperature)}
                           color="primary"
-                          variant="contained">
-                      Set
-                  </Button>
+                          variant="contained">Set</Button>
               </Box>
+          </Box>
+          <Box mt={4}>
+              <FormControl component="fieldset">
+                  <FormLabel component="legend">Stirrer</FormLabel>
+                  <Switch checked={isStirrerOn} onChange={onStirrerChange} color="primary"/>
+              </FormControl>
           </Box>
       </Container>
     )
